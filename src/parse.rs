@@ -25,8 +25,6 @@ impl fmt::Display for ParseError {
 
 impl std::error::Error for ParseError {}
 
-// ── Field reference ───────────────────────────────────────────────────────────
-
 /// A field reference parsed from the expression.
 #[derive(Debug, Clone, PartialEq)]
 pub enum FieldRef {
@@ -42,8 +40,6 @@ pub enum FieldRef {
     Gt,
 }
 
-// ── Value ─────────────────────────────────────────────────────────────────────
-
 #[derive(Debug, Clone, PartialEq)]
 pub enum Value {
     /// Numeric literal.
@@ -51,8 +47,6 @@ pub enum Value {
     /// String literal (stripped of quotes).
     Str(String),
 }
-
-// ── Expression AST ────────────────────────────────────────────────────────────
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum CmpOp {
@@ -95,8 +89,6 @@ pub enum Expr {
     Paren(Box<Expr>),
 }
 
-// ── Token ─────────────────────────────────────────────────────────────────────
-
 #[derive(Debug, Clone, PartialEq)]
 enum Tok {
     Ident(String),
@@ -120,8 +112,6 @@ enum Tok {
     RParen,
     Eof,
 }
-
-// ── Tokenizer ─────────────────────────────────────────────────────────────────
 
 struct Lexer<'a> {
     src: &'a [u8],
@@ -285,8 +275,6 @@ impl<'a> Lexer<'a> {
         }
     }
 }
-
-// ── Parser ────────────────────────────────────────────────────────────────────
 
 struct Parser<'a> {
     lex: Lexer<'a>,
@@ -478,8 +466,6 @@ impl<'a> Parser<'a> {
 pub fn parse_expr(src: &str) -> Result<Expr, ParseError> {
     Parser::new(src)?.parse()
 }
-
-// ── Unit tests ────────────────────────────────────────────────────────────────
 
 #[cfg(test)]
 mod tests {

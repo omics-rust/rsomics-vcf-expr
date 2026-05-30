@@ -1,9 +1,7 @@
 //! Evaluator: runs a parsed Expr against a VCF record line (text representation).
 //!
-//! The evaluator operates on raw VCF tab-split text — no noodles dependency —
-//! keeping the crate in Quadrant ① (pure Rust, no FFI).
-//!
-//! ## Evaluation model
+//! Operates on raw VCF tab-split text — no noodles dependency — so the crate
+//! stays FFI-free.
 //!
 //! A VCF data line has CHROM/POS/ID/REF/ALT/QUAL/FILTER/INFO/FORMAT/sample...
 //! columns.  Fields that are sample-level (FMT/*) are evaluated per-sample,
@@ -258,8 +256,6 @@ impl<'a> VcfLine<'a> {
     }
 }
 
-// ── GT matching semantics ─────────────────────────────────────────────────────
-
 /// Classify a raw GT string (e.g. `0/1`, `./.`, `1|1`) into categories.
 fn gt_classify(gt: &str) -> GtClass {
     let alleles: Vec<&str> = gt.split(['/', '|']).collect();
@@ -338,8 +334,6 @@ fn eval_gt_str(gt: &str, op: &CmpOp, pattern: &str) -> bool {
     }
 }
 
-// ── Numeric comparison helper ─────────────────────────────────────────────────
-
 fn cmp_num(lhs: f64, op: &CmpOp, rhs: f64) -> bool {
     match op {
         CmpOp::Lt => lhs < rhs,
@@ -358,8 +352,6 @@ fn cmp_str(lhs: &str, op: &CmpOp, rhs: &str) -> bool {
         _ => false,
     }
 }
-
-// ── Core evaluator ────────────────────────────────────────────────────────────
 
 /// Evaluate a single Cmp node for one sample.
 ///
@@ -527,8 +519,6 @@ impl EvalContext {
         Ok(result)
     }
 }
-
-// ── Unit tests ────────────────────────────────────────────────────────────────
 
 #[cfg(test)]
 mod tests {
